@@ -18,7 +18,6 @@
     "method-override": "^2.3.10",
     "mongoose": "^5.0.15",
     "nodemon": "^1.18.10",
-    "redis": "^2.8.0",
     "request": "^2.88.0",
     "zipkin": "^0.11.2",
     "zipkin-context-cls": "^0.11.0",

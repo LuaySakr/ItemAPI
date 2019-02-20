@@ -1,21 +1,20 @@
 'use strict';
-const cache = require('memory-cache');
+let server = require('./server');
+// const cache = require('memory-cache');
 const mongoose = require('mongoose');
 require('./models/Item');
 const BigItem = mongoose.model('smallitems');
 
-const {Annotation, 
-    jsonEncoder: {JSON_V2}} = require('zipkin');
+// const {Annotation, 
+//     jsonEncoder: {JSON_V2}} = require('zipkin');
 
-const OPERATION_CREATE = 'CREATE',
-      OPERATION_DELETE = 'DELETE';
+// const OPERATION_CREATE = 'CREATE',
+//       OPERATION_DELETE = 'DELETE';
 
 
 class BigItemController {
-    constructor({tracer, redisClient,mongoose, logChannel}) {
-        this._tracer = tracer;
-        this._redisClient = redisClient;
-        this._logChannel = logChannel;
+    constructor() {
+        
         this._mongoose=mongoose;
 
 
@@ -26,7 +25,7 @@ class BigItemController {
 
         var Request = require("request");
 
-        Request.get("http://item-api:8083/items", (error, response, body) => {
+        Request.get(server.Called_API_URL, (error, response, body) => {
             if(error) {
                 return console.dir(error);
             }

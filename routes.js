@@ -1,12 +1,12 @@
 'use strict';
-const TodoController = require('./BigItemController');
-module.exports = function (app, {tracer, redisClient, logChannel}) {
-  const todoController = new TodoController({tracer, redisClient, logChannel});
+const BigItemController = require('./BigItemController');
+module.exports = function (app, ) {
+  const smallitemController = new BigItemController();
   app.route('/smallitems')
-    .get(function(req,resp,tracer) {return todoController.list(req,resp,tracer)})
-    .post(function(req,resp) {return todoController.create(req,resp)});
+    .get(function(req,resp,tracer) {return smallitemController.list(req,resp,tracer)})
+    .post(function(req,resp) {return smallitemController.create(req,resp)});
 
   app.route('/smallitems/:smallitemId')
-    .delete(function(req,resp) {return todoController.delete(req,resp)})
-    .put(function(req,resp) {return todoController.edit(req,resp)});
+    .delete(function(req,resp) {return smallitemController.delete(req,resp)})
+    .put(function(req,resp) {return smallitemController.edit(req,resp)});
 };

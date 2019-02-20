@@ -47,7 +47,7 @@ const recorder = new  BatchRecorder({
     jsonEncoder: JSON_V2
   })
 });
-const localServiceName = 'Item-api';
+const localServiceName = 'BigItem-api';
 const tracer = new Tracer({ctxImpl, recorder, localServiceName});
 
 app.use(zipkinMiddleware({tracer}));
@@ -58,5 +58,5 @@ const routes = require('./routes')
 routes(app, {tracer, logChannel})
 
 app.listen(port, function () {
-  console.log('item list RESTful API server started on: ' + port)
+  console.log('smallitem list RESTful API server started on: ' + port)
 })

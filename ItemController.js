@@ -10,6 +10,7 @@ const {Annotation,
 const OPERATION_CREATE = 'CREATE',
       OPERATION_DELETE = 'DELETE';
 
+
 class ItemController {
     constructor({tracer, redisClient,mongoose, logChannel}) {
         this._tracer = tracer;
@@ -17,12 +18,22 @@ class ItemController {
         this._logChannel = logChannel;
         this._mongoose=mongoose;
 
+
     }
 
     list (req, res) {
         
 
-        
+        var Request = require("request");
+
+        Request.get("http://item-api2:803/items33", (error, response, body) => {
+            if(error) {
+                return console.dir(error);
+            }
+            console.dir(JSON.parse(body));
+        });
+
+
         if(req.body.itemId==null){
         Item.find({}, function(err, items) {
             var itemMap = {};

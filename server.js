@@ -1,4 +1,9 @@
 'use strict';
+const appzip = require('appmetrics-zipkin')({
+  host: 'zipkin',
+  port: 9411,
+  serviceName: 'https-pusher'
+});
 const express = require('express')
 const bodyParser = require("body-parser")
 const mongoose = require('mongoose');

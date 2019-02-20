@@ -10,22 +10,22 @@
   "author": "LuaySakr",
   "license": "ISC",
   "dependencies": {
+    "appmetrics-zipkin": "^1.1.1",
     "body-parser": "^1.18.2",
     "express": "^4.15.4",
     "express-jwt": "^5.3.0",
     "memory-cache": "^0.2.0",
+    "method-override": "^2.3.10",
+    "mongoose": "^5.0.15",
+    "nodemon": "^1.18.10",
     "redis": "^2.8.0",
+    "request": "^2.88.0",
     "zipkin": "^0.11.2",
     "zipkin-context-cls": "^0.11.0",
     "zipkin-instrumentation-express": "^0.11.2",
-    "zipkin-transport-http": "^0.11.2",
-    "method-override": "^2.3.10",
-    "mongoose": "^5.0.15"
+    "zipkin-transport-http": "^0.11.2"
   },
   "devDependencies": {
-    
     "nodemon": "^1.11.0"
-    
   }
-
 }

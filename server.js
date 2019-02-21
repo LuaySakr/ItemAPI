@@ -1,63 +1,55 @@
-'use strict';
+var express = require('express');
+var mongoose = require('mongoose');
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+var config = require('./app/config/config');
+var cors = require('cors');
+var app = express();
+
+
 const appzip = require('appmetrics-zipkin')({
   host: 'zipkin',
   port: 9411,
-  serviceName: 'https-pusher'
+  serviceName: 'smallitem-api'
 });
-const express = require('express')
-const bodyParser = require("body-parser")
-const mongoose = require('mongoose');
 
-const Called_API_URL = process.env.Called_API_URL || 'http://Called_API_URL:8080/';
-module.exports={Called_API_URL}
-// const ZIPKIN_URL = process.env.ZIPKIN_URL || 'http://127.0.0.1:9411/api/v2/spans';
-// const {Tracer, 
-//   BatchRecorder,
-//   jsonEncoder: {JSON_V2}} = require('zipkin');
-//   const CLSContext = require('zipkin-context-cls');  
-// const {HttpLogger} = require('zipkin-transport-http');
-// const zipkinMiddleware = require('zipkin-instrumentation-express').expressMiddleware;
+var opbeat = require('opbeat').start(
+// 	{
+//   appId: '873897962c',
+//   organizationId: 'c1db293267274544b523bc8e0182443c',
+//   secretToken: '3f4c16ad6b3f2453e9f5a04d94f58ce2fc081319'
+// }
+)
 
-mongoose.Promise = global.Promise;
+app.use(morgan('dev'));                                         // log every request to the console
+app.use(cors());
+app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
+app.use(bodyParser.json());                                     // parse application/json
+app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
+app.use(methodOverride());
+// app.use(opbeat.middleware.express())
 
-const db = require('./config/database');
+require('./app/router/router')(app);
 
-//Connect to Mongo Locally
-mongoose.connect(db.MongoURI, {
+var db;
 
-})
-    .then(() => {
-        console.log('MongoDB connected...');
-    })
-    .catch(err => {
-        console.log(err);
-    });
+if(process.env.NODE_ENV === "test") {
+	db = mongoose.connect(config.test_db);
+	app.listen(config.test_port, function(err){
+	  if(err) throw err;
+	  console.log("App listening on port "+config.test_port);
+	});
+} else {
+ 	db = mongoose.connect(config.db);
+        app.listen(config.port, function(err){
+	  if(err) throw err;
+	  console.log("App listening on port "+config.port);
+	});
+}
 
-// const logChannel = process.env.REDIS_CHANNEL || 'log_channel';
+mongoose.connection.on('connected', function () {
+  console.log('Mongoose default connection open to ' + config.db);
+});
 
-const port = process.env.BigItem_API_PORT || 8082
-
-
-const app = express()
-
-// // tracing
-// const ctxImpl = new CLSContext('zipkin');
-// const recorder = new  BatchRecorder({
-//   logger: new HttpLogger({
-//     endpoint: ZIPKIN_URL,
-//     jsonEncoder: JSON_V2
-//   })
-// });
-const localServiceName = 'BigItem-api';
-// const tracer = new Tracer({ctxImpl, recorder, localServiceName});
-
-// app.use(zipkinMiddleware({tracer}));
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
-const routes = require('./routes')
-routes(app)
-
-app.listen(port, function () {
-  console.log('smallitem list RESTful API server started on: ' + port)
-})
+module.exports = app;

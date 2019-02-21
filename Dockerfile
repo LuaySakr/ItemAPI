@@ -1,6 +1,6 @@
 FROM node:8-alpine
 
-EXPOSE 8082
+EXPOSE 2000
 
 WORKDIR /usr/src/app
 

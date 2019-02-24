@@ -9,7 +9,7 @@ var app = express();
 
 
 const appzip = require('appmetrics-zipkin')({
-  host: 'zipkin',
+  host: 'localhost',
   port: 9411,
   serviceName: 'smallitem-api'
 });
@@ -47,5 +47,46 @@ if(process.env.NODE_ENV === "test") {
 mongoose.connection.on('connected', function () {
   console.log('Mongoose default connection open to ' + config.db);
 });
+
+const request = require("request");
+
+function intervalFunc() {
+	console.log('Cant stop me now!');
+	
+	var options = {
+
+    uri: "http://localhost:7005/api/smallitems",
+
+    method: 'GET'
+
+
+
+	};
+	request(options, function (error, response, body) {
+
+    if (!error && response.statusCode == 200) {
+     
+      // console.log(JSON.parse(body).smallitem);
+
+     
+
+
+
+
+
+
+    }
+    else {
+
+      //console.log(error);
+    }
+
+  })
+}
+
+setInterval(intervalFunc, 10000);
+
+
+
 
 module.exports = app;

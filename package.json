@@ -35,7 +35,7 @@
     "express": "^4.13.3",
     "grant": "^4.4.1",
     "method-override": "^2.3.5",
-    "mongoose": "^4.3.5",
+    "mongoose": "^5.7.7",
     "morgan": "^1.6.1",
     "nodemon": "^1.18.10",
     "opbeat": "^3.6.6",
